@@ -1,61 +1,25 @@
 # Desafio Técnico de Data Science — Digital Grid
 
 **Vaga:** Pesquisador em Ciência de Dados — P&D Inteligência Energética (Bolsista)
-**Esforço estimado:** 3 horas · **Prazo de entrega:** 5 dias corridos
+**Duração máxima:** 3 horas
+---
 
-> **Leia antes de começar:** não esperamos que todos concluam tudo. **Preferimos três
-> questões bem-feitas e criticadas a seis questões corridas.** Se você tiver que
-> escolher, escolha profundidade. E se você discordar de algo no enunciado, diga —
-> discordância fundamentada conta a favor.
+## Introdução: Geração Distribuída e Gestão Inteligente de Energia
+
+Bem-vindo ao desafio técnico da Digital Grid! Este teste foi desenhado para avaliar suas habilidades em Data Science aplicadas ao setor de energia, com foco em **Geração Distribuída (GD)**. Nossa missão é criar modelos que otimizem a previsão de consumo, antecipem a geração de energia limpa e mapeiem o comportamento dos créditos de energia em larga escala.
+No Brasil, o crescimento da GD trouxe o **Sistema de Compensação de Energia Elétrica (SCEE)**. Nele, a energia excedente gerada por uma usina é injetada na rede e convertida em créditos para abater o consumo futuro de múltiplas Unidades Consumidoras (UCs). O grande desafio é o **rateio (alocação) desses créditos**. Historicamente feito de forma estática, esse processo gera ineficiências devido à intermitência climática e à variação de consumo.
+A Digital Grid automatiza e otimiza esse processo usando inteligência preditiva. Este teste simula desafios reais que enfrentamos no dia a dia.
 
 ---
 
-## Contexto: Geração Distribuída e o rateio de créditos
-
-No Brasil, o crescimento da Geração Distribuída (GD) trouxe o **Sistema de Compensação
-de Energia Elétrica (SCEE)**. A energia excedente gerada por uma usina é injetada na
-rede e convertida em **créditos**, que abatem o consumo futuro de múltiplas **Unidades
-Consumidoras (UCs)**.
-
-O desafio operacional é o **rateio**: decidir que percentual da geração vai para cada
-UC. Historicamente isso é feito de forma **estática** — define-se um percentual fixo
-por UC no início do contrato e quase nunca se revisa. O resultado são duas patologias:
-
-- **Vacância** — crédito acumulado em UCs que não vão usá-lo (o cliente mudou de
-  endereço, reduziu o consumo, ou simplesmente cancelou e ninguém tirou da lista).
-  Energia limpa gerada e desperdiçada.
-- **Overbooking** — UCs que cresceram e ficaram descobertas, tendo que comprar energia
-  cara da distribuidora enquanto sobra crédito parado em outro lugar da carteira.
-
-A Digital Grid resolve isso com rateio dinâmico e previsão. Este desafio é uma versão
-reduzida — e real — do que fazemos.
-
----
-
-## Dados
+## Recursos Fornecidos
 
 Dois arquivos, na raiz deste repositório. O histórico vai de **julho/2023 a
 junho/2026** (36 meses).
 
-**`consumer_unit_data.xlsx`** — histórico mensal das UCs atreladas à usina.
+**`consumer_unit_data.xlsx`** — Histórico de consumo e saldo acumulado de créditos de várias UCs que estão atreladas a uma Usina.
 
-| Coluna | Descrição |
-| --- | --- |
-| `Geração Mensal Referência Month` | mês de referência |
-| `Unidade Consumidora (UC) Número de Instalação` | identificador da UC |
-| `Conta Consumo (kWh)` | energia consumida no mês (**Ec**) |
-| `Conta Saldo Acumulado (kWh)` | crédito acumulado **antes** do rateio do mês (**Cr**) |
-
-**`power_plant_data.xlsx`** — histórico mensal de geração da usina.
-
-| Coluna | Descrição |
-| --- | --- |
-| `Geração Mensal Referência Month` | mês de referência |
-| `Unidade Consumidora (UC) Usina (Nickname)` | nome da usina |
-| `Geração Mensal SUM Energia Gerada (kWh)` | energia gerada no mês (**G**) |
-
-São dados de produção, com todos os defeitos que dados de produção têm. **Não fizemos
-nenhuma limpeza para você.**
+**`power_plant_data.xlsx`** — Histórico de geração de uma Usina Teste que é a usina em questão.
 
 ---
 
@@ -76,7 +40,7 @@ nenhuma limpeza para você.**
 
 ---
 
-## Q0 — Contrato de dados *(~30 min)*
+## Q0 — Contrato de dados
 
 Antes de qualquer modelo, construa a fundação.
 
@@ -92,7 +56,7 @@ justificada. O que não aceitamos é limpeza silenciosa.
 
 ---
 
-## Q1 — Cobertura e rateio *(~25 min)*
+## Q1 — Cobertura e rateio
 
 Implemente a lógica de alocação de créditos:
 
@@ -113,7 +77,7 @@ produção — e o que a usina faz com a energia que gerou?
 
 ---
 
-## Q2 — SQL *(~20 min)*
+## Q2 — SQL
 
 Carregue os dados **limpos** da Q0 em um banco (SQLite, DuckDB — sua escolha) e
 escreva **uma única query** que retorne, para o mês de referência:
@@ -127,17 +91,15 @@ Q1.
 
 ---
 
-## Q3 — Previsão de consumo *(~50 min)*
+## Q3 — Previsão de consumo
 
 Preveja o `Conta Consumo (kWh)` de **2026-07-01** para as **Top 10 UCs** por consumo
 histórico.
 
-- **Split:** treine com dados até `2026-05-01` e valide em `2026-06-01`. Se conseguir,
-  faça também uma **validação walk-forward** nos últimos meses — um único mês de teste
-  é uma amostra de tamanho 1.
+- **Split:** treine com dados até `2026-05-01` e valide em `2026-06-01`.
 - **Modelos:** um *baseline* estatístico simples e um modelo mais avançado.
   **Justifique a escolha do modelo à luz do tamanho e da estrutura dos dados** — não
-  há prêmio por usar a ferramenta mais sofisticada, há prêmio por usar a adequada.
+  há vantagem por usar a ferramenta mais sofisticada, há vantagem por usar a adequada.
 - **Métricas:** MAPE e MAE. Se alguma delas se comportar mal com estes dados, diga
   isso e proponha alternativa.
 - **Compare** baseline vs. modelo avançado e explique **por que** um superou o outro.
@@ -146,7 +108,7 @@ histórico.
 
 ---
 
-## Q4 — Rebalanceamento *(~35 min)*
+## Q4 — Rebalanceamento
 
 A Digital Grid tem um sistema chamado **REBALANCE**, que redistribui energia para
 evitar vacância e overbooking. Simule uma versão simplificada.
@@ -166,7 +128,7 @@ Escreva uma função que distribua esse excedente entre as UCs. Requisitos:
 
 ---
 
-## Q5 — Exploração e visão de negócio *(~20 min)*
+## Q5 — Exploração e visão de negócio
 
 **Qualidade:** que anomalias você encontrou nos dados? Como trataria cada uma numa
 pipeline de produção (ETL)?
@@ -183,26 +145,53 @@ não é uma observação.
 
 ## Entrega
 
-1. **Repositório Git** (ou `.zip`) com um **Jupyter Notebook** documentado, e um
-   `requirements.txt` ou equivalente — precisamos conseguir rodar seu código.
-2. **Vídeo de 3 a 5 minutos**, não listado (YouTube, Loom, Drive), apresentando a
-   solução como se fosse para o CTO e o time de Produto:
-   - **1 min** — o problema: o que é o rateio na GD, e a dor da vacância/overbooking.
-   - **2 min** — a solução: qual modelo venceu na Q3 e **por quê**; como você pensou o
-     rebalanceamento da Q4.
-   - **1 min** — o insight mais interessante da Q5 e o que a Digital Grid faz com ele.
+### 1. O código, num fork deste repositório
+
+Faça um **fork** deste repositório (botão *Fork*, no topo da página), trabalhe nele e
+nos mande o link do seu fork. Não abra Pull Request — assim um candidato não vê a
+solução do outro.
+
+O fork deve conter:
+
+- um **Jupyter Notebook (.ipynb)** documentado, com as respostas e o raciocínio;
+- um **`requirements.txt`** (ou `environment.yml`, ou `pyproject.toml`) — precisamos
+  conseguir rodar seu código;
+- um **`SOLUCAO.md`** curto, ou uma seção inicial no notebook, dizendo o que você fez,
+  o que deixou de fora e por quê.
+
+**Commite ao longo do trabalho**, não tudo de uma vez no fim. O histórico faz parte da
+entrega: queremos ver como você pensou, não só onde chegou.
+
+### 2. Um vídeo de 3 a 5 minutos
+
+Não listado (YouTube, Loom, Drive), apresentando a solução como se fosse para o CTO e o
+time de Produto:
+
+- **1 min** — o problema: o que é o rateio na GD, e a dor da vacância/overbooking.
+- **2 min** — a solução: qual modelo venceu na Q3 e **por quê**; como você pensou o
+  rebalanceamento da Q4.
+- **1 min** — o insight mais interessante da Q5 e o que a Digital Grid faz com ele.
+
+### Para onde enviar
+
+Mande **o link do seu fork** e **o link do vídeo** para **lucas@dg.energy**, com o
+assunto:
+
+```
+Desafio Data Science — <seu nome completo>
+```
 
 ---
 
 ## Como avaliamos
 
-| Peso | Critério |
+| Critério de Avaliação |
 | --- | --- |
-| **35%** | **Qualidade de dados (Q0/Q5)** — as anomalias que você encontrou e como as tratou |
-| **20%** | **Rigor na modelagem (Q3)** — o *porquê* por trás das métricas, não o número |
-| **15%** | **Lógica de negócio (Q4)** — a priorização é defensável? conversa com a Q3? |
-| **10%** | **Correção técnica (Q1/Q2)** — fórmulas certas, código vetorizado, em funções |
-| **10%** | **Insight acionável (Q5)** |
-| **10%** | **Comunicação (notebook + vídeo)** |
+*Qualidade de dados (Q0/Q5)** — as anomalias que você encontrou e como as tratou |
+| **Rigor na modelagem (Q3)** — o *porquê* por trás das métricas, não o número |
+| **Lógica de negócio (Q4)** — a priorização é defensável? conversa com a Q3? |
+| **Correção técnica (Q1/Q2)** — fórmulas certas, código vetorizado, em funções |
+| **Insight acionável (Q5)** |
+| **Comunicação (notebook + vídeo)** |
 
 Boa sorte.
