@@ -64,9 +64,6 @@ Implemente a lógica de alocação de créditos:
    `Co = ECA − (Cr + D)` se `ECA > (Cr + D)`; caso contrário `Co = 0`.
 3. **Percentual de rateio:** `P = Co / Σ(Co de todas as UCs da usina)`
 
-Sua função deve **receber o mês como parâmetro** e funcionar para qualquer mês do
-histórico — não apenas o de referência.
-
 O rateio é feito sobre o **consumo faturado** do mês — ou seja, o *valor* de cada linha
 entra como está. Se você decidir imputar ou corrigir um valor, essa correção vale para a
 modelagem (Q3), não para o rateio.
@@ -97,20 +94,37 @@ Q1.
 
 ---
 
-## Q3 — Previsão de consumo
+## Q3 — Previsão
+
+Em ambos os itens: **treine com dados até `2026-05-01` e valide em `2026-06-01`.** Depois
+de escolher o modelo, **retreine incluindo junho** para prever julho — você validou em
+junho, mas o pedido é prever **julho/2026**.
+
+Use **MAPE e MAE**. Se alguma das duas se comportar mal com estes dados, diga isso e
+proponha uma alternativa.
+
+Em cada item, construa **um baseline estatístico simples e um modelo mais avançado**,
+compare os dois e explique **por que** um superou o outro. Não há vantagem em usar a
+ferramenta mais sofisticada — há vantagem em usar a adequada, e em saber dizer qual é.
+**Se o baseline vencer, diga que venceu.**
+
+### (a) Consumo das UCs
 
 Preveja o `Conta Consumo (kWh)` de **2026-07-01** para as **Top 10 UCs** por consumo
 histórico.
 
-- **Split:** treine com dados até `2026-05-01` e valide em `2026-06-01`.
-- **Modelos:** um *baseline* estatístico simples e um modelo mais avançado.
-  **Justifique a escolha do modelo à luz do tamanho e da estrutura dos dados** — não
-  há vantagem por usar a ferramenta mais sofisticada, há vantagem por usar a adequada.
-- **Métricas:** MAPE e MAE. Se alguma delas se comportar mal com estes dados, diga
-  isso e proponha alternativa.
-- **Compare** baseline vs. modelo avançado e explique **por que** um superou o outro.
-  Se o baseline venceu, diga que venceu.
-- Lembre-se: você validou em junho, mas o pedido é prever **julho**.
+### (b) Geração da usina
+
+Preveja a `Geração Mensal SUM Energia Gerada (kWh)` de **2026-07-01**.
+
+É uma série só, mas não é uma série fácil. Antes de modelar, olhe o histórico inteiro e
+decida — justificando — **que parte dele você vai usar para treinar, e por quê**.
+
+### A pergunta que fecha as duas
+
+Com o consumo previsto e a geração prevista em mãos: **a usina vai conseguir cobrir a
+carteira em julho/2026?** Responda com número, e diga o que a Digital Grid deveria fazer
+a respeito.
 
 ---
 
@@ -127,7 +141,7 @@ recupera esse crédito e o devolve a quem precisa.
    damos o número; ele sai da sua Q0.
 2. **Redistribua entre as UCs ativas.** Escreva uma função que faça a alocação.
    - **Não distribua igualmente.** Priorize quem traz mais segurança ao negócio, e
-     explique o critério. Se a Q3 ficou pronta, use a previsão; se não, use o histórico.
+     explique o critério. Se a Q3 ficou pronta, use as previsões; se não, use o histórico.
    - **Restrição obrigatória:** nenhuma UC pode **terminar** com saldo acima de **1 mês**
      do seu consumo médio dos últimos 12 meses. Crédito parado é crédito desperdiçado —
      é justamente o problema que estamos consertando.
