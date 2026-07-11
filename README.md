@@ -1,7 +1,7 @@
 # Desafio Técnico de Data Science — Digital Grid
 
-**Vaga:** Pesquisador em Ciência de Dados — P&D Inteligência Energética (Bolsista)
-**Duração máxima:** 3 horas
+Vaga: Pesquisador em Ciência de Dados — P&D Inteligência Energética (Bolsista)
+Duração máxima: 3 horas
 ---
 
 ## Introdução: Geração Distribuída e Gestão Inteligente de Energia
