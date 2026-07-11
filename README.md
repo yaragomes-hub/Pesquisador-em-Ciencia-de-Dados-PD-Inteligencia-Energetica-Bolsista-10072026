@@ -76,7 +76,7 @@ está correto.
 
 **Responda no notebook:** o que acontece matematicamente com `P` se `Σ Co = 0`, ou
 seja, se nenhuma UC precisar de crédito naquele mês? Como você trataria isso em
-produção — e o que a usina faz com a energia que gerou?
+produção?
 
 ---
 
