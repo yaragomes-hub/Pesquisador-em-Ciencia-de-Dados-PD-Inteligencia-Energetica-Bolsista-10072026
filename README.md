@@ -193,8 +193,6 @@ Desafio Data Science — <seu nome completo>
 
 ## Como avaliamos
 
-Em ordem de peso:
-
 1. **Qualidade de dados (Q0/Q5)** — as anomalias que você encontrou e como as tratou.
    É o critério que mais pesa, de longe.
 2. **Rigor na modelagem (Q3)** — o *porquê* por trás das métricas, não o número.
